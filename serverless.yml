@@ -1,0 +1,124 @@
+service: teamtask
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: serverlessUser
+  environment:
+    tableName: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: "*"
+
+plugins:
+  - serverless-webpack
+  - serverless-add-api-key
+
+package:
+  individually: true
+
+custom:
+  tableName: tasks
+  apiKeys:
+    - name: TaskApiKey
+      usagePlan:
+        quota:
+          limit: 2000
+          period: MONTH
+        throttle:
+          rateLimit: 5
+          burstLimit: 20
+
+functions:
+  postTask:
+    handler: lambdas/api/postTask.handler
+    events:
+      - http:
+          path: task
+          method: POST
+          cors: true
+          private: true
+  getTask:
+    handler: lambdas/api/getTask.handler
+    events:
+      - http:
+          path: task/{ID}
+          method: GET
+          cors: true
+          private: true
+  updateTask:
+    handler: lambdas/api/updateTask.handler
+    events:
+      - http:
+          path: task/{ID}
+          method: PUT
+          cors: true
+          private: true
+  getMembersTask:
+    handler: lambdas/api/getMembersTask.handler
+    events:
+      - http:
+          path: task/member/{AssignedTo}
+          method: GET
+          cors: true
+          private: true
+  deleteTask:
+    handler: lambdas/api/deleteTask.handler
+    events:
+      - http:
+          path: task/{ID}
+          method: DELETE
+          cors: true
+          private: true
+  assignTask:
+    handler: lambdas/api/assignTask.handler
+    events:
+      - http:
+          path: task/{ID}/assign/{AssignedTo}
+          method: PUT
+          cors: true
+          private: true
+  acceptTask:
+    handler: lambdas/api/acceptTask.handler
+    events:
+      - http:
+          path: task/{ID}/accept
+          method: PUT
+          cors: true
+          private: true
+  completeTask:
+    handler: lambdas/api/completeTask.handler
+    events:
+      - http:
+          path: task/{ID}/complete
+          method: PUT
+          cors: true
+          private: true
+  closeTask:
+    handler: lambdas/api/closeTask.handler
+    events:
+      - http:
+          path: task/{ID}/close
+          method: PUT
+          cors: true
+          private: true
+
+resources:
+  Resources:
+    MyDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: ID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: ID
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
