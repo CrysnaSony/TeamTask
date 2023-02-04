@@ -3,8 +3,10 @@
     "aws-sdk": "^2.1307.0",
     "lambda-hooks": "^0.2.1",
     "serverless-add-api-key": "^4.2.1",
-    "serverless-webpack": "^5.11.0",
     "webpack": "^5.75.0",
     "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "serverless-webpack": "^5.11.0"
   }
 }
