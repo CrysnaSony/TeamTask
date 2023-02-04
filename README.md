@@ -5,22 +5,9 @@ Create,Read, Update, Delete,Assign Task,Mark status of the task.
 CI/CD pipeline with github workflows.
 
 
-### Installation
-
-Install the `serverless` CLI via NPM:
-
-```bash
-npm install -g serverless
-```
-Install other dependencies via NPM in project folder:
-
-```bash
-npm install
-```
-
 ### AWS User
 
-Create IAM user in AWS with all below permissions:
+First create IAM user in AWS with all below permissions:
 - AmazonAPIGatewayAdministrator	
 - AmazonDynamoDBFullAccess	
 - AmazonS3FullAccess	
