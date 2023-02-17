@@ -16,6 +16,7 @@ First create IAM user in AWS with all below permissions:
 - CloudWatchLogsFullAccess
 - IAMFullAccess
 
+
 Copy the Access Key and Secret Key and save the credentials in your github repo Secret Token.
 
 Push the Code to Main Branch and apis should be up and running after deployment
